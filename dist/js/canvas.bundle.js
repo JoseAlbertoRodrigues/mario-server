@@ -2,6 +2,34 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/img/background.png":
+/*!********************************!*\
+  !*** ./src/img/background.png ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "072d51bcc9c09311d4c2a6708b05bddc.png");
+
+/***/ }),
+
+/***/ "./src/img/hills.png":
+/*!***************************!*\
+  !*** ./src/img/hills.png ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (__webpack_require__.p + "cfffe4c371f5e11d372b398a87c51dd0.png");
+
+/***/ }),
+
 /***/ "./src/img/platform.png":
 /*!******************************!*\
   !*** ./src/img/platform.png ***!
@@ -112,12 +140,16 @@ var __webpack_exports__ = {};
   \**************************/
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _img_platform_png__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../img/platform.png */ "./src/img/platform.png");
+/* harmony import */ var _img_hills_png__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../img/hills.png */ "./src/img/hills.png");
+/* harmony import */ var _img_background_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../img/background.png */ "./src/img/background.png");
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
 function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+
+
 
 var canvas = document.querySelector('canvas');
 var c = canvas.getContext('2d');
@@ -181,24 +213,58 @@ var Platform = /*#__PURE__*/function () {
   }]);
   return Platform;
 }();
+var GenericObject = /*#__PURE__*/function () {
+  function GenericObject(_ref2) {
+    var x = _ref2.x,
+      y = _ref2.y,
+      image = _ref2.image;
+    _classCallCheck(this, GenericObject);
+    this.position = {
+      x: x,
+      y: y
+    };
+    this.width = image.width;
+    this.height = image.height;
+    this.image = image;
+  }
+  _createClass(GenericObject, [{
+    key: "draw",
+    value: function draw() {
+      c.drawImage(this.image, this.position.x, this.position.y);
+    }
+  }]);
+  return GenericObject;
+}();
+function createImage(imageSrc) {
+  var image = new Image();
+  image.src = imageSrc;
+  return image;
+}
+var platformImage = createImage(_img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]);
 var player = new Player();
-var image = new Image();
-image.src = _img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"];
-console.log(image);
 var platforms = [new Platform({
   x: -1,
   y: 470,
-  image: image
+  image: platformImage
 }), new Platform({
-  x: image.width - 3,
+  x: platformImage.width - 3,
   y: 470,
-  image: image
+  image: platformImage
 }), new Platform({
   x: 1000,
   y: 400,
-  image: image
+  image: platformImage
 })]; // usar esse agora
 
+var genericObjects = [new GenericObject({
+  x: -1,
+  y: -1,
+  image: createImage(_img_background_png__WEBPACK_IMPORTED_MODULE_2__["default"])
+}), new GenericObject({
+  x: -1,
+  y: -1,
+  image: createImage(_img_hills_png__WEBPACK_IMPORTED_MODULE_1__["default"])
+})];
 var keys = {
   right: {
     pressed: false
@@ -212,6 +278,9 @@ function animate() {
   c.fillStyle = 'white';
   c.fillRect(0, 0, canvas.width, canvas.height);
   requestAnimationFrame(animate);
+  genericObjects.forEach(function (genericObject) {
+    genericObject.draw();
+  });
   platforms.forEach(function (platform) {
     platform.draw();
   });
@@ -229,10 +298,16 @@ function animate() {
       platforms.forEach(function (platform) {
         platform.position.x -= 5;
       });
+      genericObjects.forEach(function (genericObject) {
+        genericObject.position.x -= 3;
+      });
     } else if (keys.left.pressed) {
       scrollOffset -= 5;
       platforms.forEach(function (platform) {
         platform.position.x += 5;
+      });
+      genericObjects.forEach(function (genericObject) {
+        genericObject.position.x += 3;
       });
     }
   }
@@ -250,8 +325,8 @@ function animate() {
   }
 }
 animate();
-addEventListener('keydown', function (_ref2) {
-  var key = _ref2.key;
+addEventListener('keydown', function (_ref3) {
+  var key = _ref3.key;
   // console.log(event.key)
   switch (key) {
     case 'a':
@@ -275,8 +350,8 @@ addEventListener('keydown', function (_ref2) {
 });
 
 // adicionado para o jogador parar de se mover quando pressionar uma tecla
-addEventListener('keyup', function (_ref3) {
-  var key = _ref3.key;
+addEventListener('keyup', function (_ref4) {
+  var key = _ref4.key;
   // console.log(event.key)
   switch (key) {
     case 'a':
