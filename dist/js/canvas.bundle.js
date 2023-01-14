@@ -182,10 +182,10 @@ var Player = /*#__PURE__*/function () {
       this.draw();
       this.position.x += this.velocity.x;
       this.position.y += this.velocity.y;
+
+      // se o personagem sair da tela abaixo do chão
       if (this.position.y + this.height + this.velocity.y <= canvas.height) {
         this.velocity.y += gravity;
-      } else {
-        this.velocity.y = 0;
       }
     }
   }]);
@@ -251,8 +251,8 @@ var platforms = [new Platform({
   y: 470,
   image: platformImage
 }), new Platform({
-  x: 1000,
-  y: 400,
+  x: platformImage.width * 2 + 1000,
+  y: 470,
   image: platformImage
 })]; // usar esse agora
 
@@ -274,6 +274,34 @@ var keys = {
   }
 };
 var scrollOffset = 0;
+function init() {
+  platformImage = createImage(_img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]);
+  player = new Player();
+  platforms = [new Platform({
+    x: -1,
+    y: 470,
+    image: platformImage
+  }), new Platform({
+    x: platformImage.width - 3,
+    y: 470,
+    image: platformImage
+  }), new Platform({
+    x: platformImage.width * 2 + 1000,
+    y: 470,
+    image: platformImage
+  })]; // usar esse agora
+
+  genericObjects = [new GenericObject({
+    x: -1,
+    y: -1,
+    image: createImage(_img_background_png__WEBPACK_IMPORTED_MODULE_2__["default"])
+  }), new GenericObject({
+    x: -1,
+    y: -1,
+    image: createImage(_img_hills_png__WEBPACK_IMPORTED_MODULE_1__["default"])
+  })];
+  var scrollOffset = 0;
+}
 function animate() {
   c.fillStyle = 'white';
   c.fillRect(0, 0, canvas.width, canvas.height);
@@ -320,8 +348,15 @@ function animate() {
   });
 
   // console.log(scrollOffset) testar se a rolagem passou de um determinado valor
+  // win condition
   if (scrollOffset > 2000) {
     console.log('You Win! Parabêns!');
+  }
+
+  // lose condition
+  if (player.position.y > canvas.height) {
+    init();
+    console.log('you lose');
   }
 }
 animate();

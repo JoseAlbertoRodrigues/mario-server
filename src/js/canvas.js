@@ -34,10 +34,9 @@ class Player {
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
 
+        // se o personagem sair da tela abaixo do chão
         if (this.position.y + this.height + this.velocity.y <= canvas.height) {
             this.velocity.y += gravity
-        } else {
-            this.velocity.y = 0
         }
     }
 }
@@ -80,10 +79,10 @@ function createImage(imageSrc) {
     return image
 }
 
-const platformImage = createImage(platform)
+let platformImage = createImage(platform)
 
-const player = new Player()
-const platforms = [
+let player = new Player()
+let platforms = [
     new Platform({
         x: -1,
         y: 470,
@@ -95,13 +94,13 @@ const platforms = [
         image: platformImage
     }),
     new Platform({
-        x:1000,
-        y:400,
+        x:platformImage.width * 2 + 1000,
+        y:470,
         image: platformImage
     })
 ] // usar esse agora
 
-const genericObjects = [
+let genericObjects = [
     new GenericObject({
         x: -1,
         y: -1,
@@ -124,6 +123,44 @@ const keys = {
 }
 
 let scrollOffset = 0
+
+function init() {
+    platformImage = createImage(platform)
+
+    player = new Player()
+    platforms = [
+        new Platform({
+            x: -1,
+            y: 470,
+            image: platformImage
+        }),
+        new Platform({
+            x: platformImage.width - 3,
+            y: 470,
+            image: platformImage
+        }),
+        new Platform({
+            x:platformImage.width * 2 + 1000,
+            y:470,
+            image: platformImage
+        })
+    ] // usar esse agora
+
+    genericObjects = [
+        new GenericObject({
+            x: -1,
+            y: -1,
+            image: createImage(background)
+        }),
+        new GenericObject({
+            x: -1,
+            y: -1,
+            image: createImage(hills)
+        })
+    ]
+
+    let scrollOffset = 0
+}
 
 function animate() {
     c.fillStyle = 'white'
@@ -179,8 +216,15 @@ function animate() {
     })
 
     // console.log(scrollOffset) testar se a rolagem passou de um determinado valor
+    // win condition
     if (scrollOffset > 2000) {
         console.log('You Win! Parabêns!')
+    }
+
+    // lose condition
+    if (player.position.y > canvas.height) {
+        init()
+        console.log('you lose')
     }
 }
 
