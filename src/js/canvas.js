@@ -2,8 +2,8 @@ import platform from '../img/platform.png'
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
-canvas.width = innerWidth
-canvas.height = innerHeight
+canvas.width = 1024
+canvas.height = 576
 
 const gravity = 0.5
 
@@ -40,36 +40,42 @@ class Player {
 }
 
 class Platform {
-    constructor({x, y}) {
+    constructor({x, y, image}) {
         this.position = {
             x,
             y
         }
-
-        this.width = 200
-        this.height = 20
+        this.width = image.width
+        this.height = image.height
+        this.image = image
     }
 
     draw() {
-        c.fillStyle = 'blue'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        c.drawImage(this.image, this.position.x, this.position.y)
     }
 }
 
 const player = new Player()
+const image = new Image()
+image.src = platform
+
+console.log(image)
 
 const platforms = [
     new Platform({
-        x:200,
-        y:200
+        x: -1,
+        y: 470,
+        image: image
     }),
     new Platform({
-        x:600,
-        y:300
+        x: image.width - 3,
+        y: 470,
+        image: image
     }),
     new Platform({
         x:1000,
-        y:400
+        y:400,
+        image: image
     })
 ] // usar esse agora
 
@@ -85,12 +91,13 @@ const keys = {
 let scrollOffset = 0
 
 function animate() {
-    c.clearRect(0, 0, canvas.width, canvas.height)
+    c.fillStyle = 'white'
+    c.fillRect(0, 0, canvas.width, canvas.height)
     requestAnimationFrame(animate)
-    player.update()
     platforms.forEach(platform => {
         platform.draw()
     })
+    player.update()
 
     // key Pressed
     if (keys.right.pressed && player.position.x < 400) {
