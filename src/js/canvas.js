@@ -3,13 +3,25 @@ import hills from '../img/hills.png'
 import background from '../img/background.png'
 import platformSmallTall from '../img/platformSmallTall.png'
 
+// Player
+import spriteRunLeft from '../img/spriteRunLeft.png'
+import spriteRunRight from '../img/spriteRunRight.png'
+import spriteStandLeft from '../img/spriteStandLeft.png'
+import spriteStandRight from '../img/spriteStandRight.png'
+
+// Player 2
+import idleRight from '../img/idleRight.png'
+import idleLeft from '../img/idleLeft.png'
+import runRight from '../img/runRight.png'
+import runLeft from '../img/runLeft.png'
+
 const canvas = document.querySelector('canvas')
 const c = canvas.getContext('2d')
 
 canvas.width = 1024
 canvas.height = 576
 
-const gravity = 0.5
+const gravity = 1.5
 
 class Player {
     constructor () {
@@ -22,16 +34,106 @@ class Player {
             x: 0,
             y: 0
         }
-        this.width = 30
-        this.height = 30
+        // Player 1
+        this.width = 66
+        this.height = 150
+        this.image = createImage(spriteStandRight)
+
+        this.frames = 0 // qual o quadro estamos
+
+        // será um tipo de objeto, porque se eu quiser mudar o estado do sprite
+        // eu usarei ele, tipo correndo, parado, talvez atirando, ainda verei o que posso fazer
+        this.sprites = {
+            stand: {
+                right: createImage(spriteStandRight),
+                left: createImage(spriteStandLeft),
+                cropWidth: 177, // largura do corte
+                width: 66 // largura da versão pequena da imagem
+            },
+            run: {
+                right: createImage(spriteRunRight),
+                left: createImage(spriteRunLeft),
+                cropWidth: 341, // largura do corte
+                width: 127.875 // largura da versão pequena da imagem
+            }
+        }
+        // sprite atual player 1
+        this.currentSprite = this.sprites.stand.right
+        this.currentCropWidth = 177
+
+        // Player 2
+        // this.width = 66 // 567 * 0.313
+        // this.height = 150 // 556 * 0.313
+        // this.image = createImage(idleRight)
+        // this.sprites = {
+        //     stand: {
+        //         right: createImage(idleRight),
+        //         left: createImage(idleLeft),
+        //         cropWidth: 567, // largura do corte
+        //         // width: 66 // largura da versão pequena da imagem
+        //     },
+        //     run: {
+        //         right: createImage(runRight),
+        //         Left: createImage(runLeft),
+        //         cropWidth: 567, // largura do corte, pode talvez ser quase o dobro
+        //         // width: 150 // largura da versão pequena da imagem
+        //     }
+        // }
+        // // sprite atual player 2
+        // this.currentSprite = this.sprites.stand.right
+        // this.currentCropWidth = 567
     }
 
     draw() {
-        c.fillStyle ='red'
-        c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        // c.fillStyle ='red'
+        // c.fillRect(this.position.x, this.position.y, this.width, this.height)
+        
+        // Player 1
+        c.drawImage(
+            this.currentSprite,
+            this.currentCropWidth * this.frames,
+            0,
+            this.currentCropWidth,
+            400,
+            this.position.x,
+            this.position.y,
+            this.width,
+            this.height)
+        
+        // Player 2
+        // c.strokeRect(this.position.x, this.position.y, this.width, this.height)
+        // c.drawImage(
+        //     this.currentSprite,
+        //     this.currentCropWidth * this.frames,
+        //     0,
+        //     this.currentCropWidth,
+        //     556,
+        //     this.position.x,
+        //     this.position.y,
+        //     this.width,
+        //     this.height)
     }
 
     update() {
+        this.frames++
+        // player 1
+        if (this.frames > 59 && (this.currentSprite === this.sprites.stand.right ||
+            this.currentSprite === this.sprites.stand.left)) {
+            this.frames = 0
+        } else if (this.frames > 29  && (this.currentSprite === this.sprites.run.right ||
+            this.currentSprite === this.sprites.run.left)) {
+            this.frames = 0
+        }
+
+        // player 2
+        // if (this.frames > 9  && (this.currentSprite === this.sprites.stand.right ||
+        //     this.currentSprite === this.sprites.stand.left)) {
+        //     this.frames = 0
+        // } else if (this.frames > 7  && (this.currentSprite === this.sprites.run.right ||
+        //     this.currentSprite === this.sprites.run.left)) {
+        //     this.frames = 0
+        // }
+
         this.draw()
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
@@ -88,6 +190,7 @@ let player = new Player()
 let platforms = [] // usar esse agora
 let genericObjects = []
 
+let lastKey
 const keys = {
     right: {
         pressed: false
@@ -211,6 +314,27 @@ function animate() {
         }
     })
 
+    // se a tecla está precionada
+    // sprite switching
+    if (keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.run.right) {
+        player.frames = 1
+        player.currentSprite = player.sprites.run.right
+        player.currentCropWidth = player.sprites.run.cropWidth
+        player.width = player.sprites.run.width
+    } else if (keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.run.left) {
+        player.currentSprite = player.sprites.run.left
+        player.currentCropWidth = player.sprites.run.cropWidth
+        player.width = player.sprites.run.width
+    } else if (!keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.stand.left) {
+        player.currentSprite = player.sprites.stand.left
+        player.currentCropWidth = player.sprites.stand.cropWidth
+        player.width = player.sprites.stand.width
+    } else if (!keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.stand.right) {
+        player.currentSprite = player.sprites.stand.right
+        player.currentCropWidth = player.sprites.stand.cropWidth
+        player.width = player.sprites.stand.width
+    }
+
     // console.log(scrollOffset) testar se a rolagem passou de um determinado valor
     // win condition
     if (scrollOffset > platformImage.width * 5 + 300 - 2) {
@@ -233,6 +357,10 @@ addEventListener('keydown', ({key}) => {
         case 'a':
             console.log('left')
             keys.left.pressed = true
+            lastKey = 'left'
+            // player.currentSprite = player.sprites.run.left
+            // player.currentCropWidth = player.sprites.run.cropWidth
+            // player.width = player.sprites.run.width
             break
         case 's':
             console.log('down')
@@ -240,6 +368,10 @@ addEventListener('keydown', ({key}) => {
         case 'd':
             console.log('right')
             keys.right.pressed = true
+            lastKey = 'right'
+            // player.currentSprite = player.sprites.run.right
+            // player.currentCropWidth = player.sprites.run.cropWidth
+            // player.width = player.sprites.run.width
             break
         case 'w':
             console.log('up')
@@ -264,6 +396,9 @@ addEventListener('keyup', ({key}) => {
         case 'd':
             console.log('right')
             keys.right.pressed = false
+            // player.currentSprite = player.sprites.stand.right
+            // player.currentCropWidth = player.sprites.stand.cropWidth
+            // player.width = player.sprites.stand.width
             // player.velocity.x = 0
             break
         case 'w':
