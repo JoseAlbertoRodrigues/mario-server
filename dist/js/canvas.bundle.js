@@ -288,7 +288,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
 
 
-// Player
+// Player 1
 
 
 
@@ -303,371 +303,375 @@ var canvas = document.querySelector('canvas');
 var c = canvas.getContext('2d');
 canvas.width = 1024;
 canvas.height = 576;
-var gravity = 1.5;
-var Player = /*#__PURE__*/function () {
-  function Player() {
-    _classCallCheck(this, Player);
-    this.speed = 10;
-    this.position = {
-      x: 100,
-      y: 100
-    };
-    this.velocity = {
-      x: 0,
-      y: 0
-    };
-    // Player 1
-    this.width = 66;
-    this.height = 150;
-    this.image = createImage(_img_spriteStandRight_png__WEBPACK_IMPORTED_MODULE_7__["default"]);
-    this.frames = 0; // qual o quadro estamos
-
-    // será um tipo de objeto, porque se eu quiser mudar o estado do sprite
-    // eu usarei ele, tipo correndo, parado, talvez atirando, ainda verei o que posso fazer
-    this.sprites = {
-      stand: {
-        right: createImage(_img_spriteStandRight_png__WEBPACK_IMPORTED_MODULE_7__["default"]),
-        left: createImage(_img_spriteStandLeft_png__WEBPACK_IMPORTED_MODULE_6__["default"]),
-        cropWidth: 177,
-        // largura do corte
-        width: 66 // largura da versão pequena da imagem
-      },
-
-      run: {
-        right: createImage(_img_spriteRunRight_png__WEBPACK_IMPORTED_MODULE_5__["default"]),
-        left: createImage(_img_spriteRunLeft_png__WEBPACK_IMPORTED_MODULE_4__["default"]),
-        cropWidth: 341,
-        // largura do corte
-        width: 127.875 // largura da versão pequena da imagem
-      }
-    };
-    // sprite atual player 1
-    this.currentSprite = this.sprites.stand.right;
-    this.currentCropWidth = 177;
-
-    // Player 2
-    // this.width = 66 // 567 * 0.313
-    // this.height = 150 // 556 * 0.313
-    // this.image = createImage(idleRight)
-    // this.sprites = {
-    //     stand: {
-    //         right: createImage(idleRight),
-    //         left: createImage(idleLeft),
-    //         cropWidth: 567, // largura do corte
-    //         // width: 66 // largura da versão pequena da imagem
-    //     },
-    //     run: {
-    //         right: createImage(runRight),
-    //         Left: createImage(runLeft),
-    //         cropWidth: 567, // largura do corte, pode talvez ser quase o dobro
-    //         // width: 150 // largura da versão pequena da imagem
-    //     }
-    // }
-    // // sprite atual player 2
-    // this.currentSprite = this.sprites.stand.right
-    // this.currentCropWidth = 567
-  }
-  _createClass(Player, [{
-    key: "draw",
-    value: function draw() {
-      // c.fillStyle ='red'
-      // c.fillRect(this.position.x, this.position.y, this.width, this.height)
-
+addEventListener('load', function () {
+  var gravity = 1.5;
+  var Player = /*#__PURE__*/function () {
+    function Player() {
+      _classCallCheck(this, Player);
+      this.speed = 10;
+      this.position = {
+        x: 100,
+        y: 100
+      };
+      this.velocity = {
+        x: 0,
+        y: 0
+      };
       // Player 1
-      c.drawImage(this.currentSprite, this.currentCropWidth * this.frames, 0, this.currentCropWidth, 400, this.position.x, this.position.y, this.width, this.height);
+      // this.width = 66
+      // this.height = 150
+      // this.image = createImage(spriteStandRight)
+
+      this.frames = 0; // qual o quadro estamos
+
+      // será um tipo de objeto, porque se eu quiser mudar o estado do sprite
+      // eu usarei ele, tipo correndo, parado, talvez atirando, ainda verei o que posso fazer
+      // this.sprites = {
+      //     stand: {
+      //         right: createImage(spriteStandRight),
+      //         left: createImage(spriteStandLeft),
+      //         cropWidth: 177, // largura do corte
+      //         width: 66 // largura da versão pequena da imagem
+      //     },
+      //     run: {
+      //         right: createImage(spriteRunRight),
+      //         left: createImage(spriteRunLeft),
+      //         cropWidth: 341, // largura do corte
+      //         width: 127.875 // largura da versão pequena da imagem
+      //     }
+      // }
+      // sprite atual player 1
+      // this.currentSprite = this.sprites.stand.right
+      // this.currentCropWidth = 177
 
       // Player 2
-      // c.strokeRect(this.position.x, this.position.y, this.width, this.height)
-      // c.drawImage(
-      //     this.currentSprite,
-      //     this.currentCropWidth * this.frames,
-      //     0,
-      //     this.currentCropWidth,
-      //     556,
-      //     this.position.x,
-      //     this.position.y,
-      //     this.width,
-      //     this.height)
+      this.width = 567 * 0.313; //imagem mais estreita 286 * 0.313 // 567 * 0.313
+      this.height = 556 * 0.313; //estreita 475 * 0.313 // 556 * 0.313
+      this.image = createImage(_img_idleRight_png__WEBPACK_IMPORTED_MODULE_8__["default"]);
+      this.sprites = {
+        stand: {
+          right: createImage(_img_idleRight_png__WEBPACK_IMPORTED_MODULE_8__["default"]),
+          left: createImage(_img_idleLeft_png__WEBPACK_IMPORTED_MODULE_9__["default"]),
+          cropWidth: 567,
+          //286, // 567 largura do corte
+          width: 567 * 0.313 // 286 * 0.313 // 567 * 0.313 // largura da versão pequena da imagem
+        },
+
+        run: {
+          right: createImage(_img_runRight_png__WEBPACK_IMPORTED_MODULE_10__["default"]),
+          left: createImage(_img_runLeft_png__WEBPACK_IMPORTED_MODULE_11__["default"]),
+          cropWidth: 567,
+          //286, // 567 * 0.313 largura do corte, pode talvez ser quase o dobro
+          width: 567 * 0.313 //286 * 0.313 // 567 * 0.313 // largura da versão pequena da imagem
+        }
+      };
+      // // sprite atual player 2
+      this.currentSprite = this.sprites.stand.right;
+      this.currentCropWidth = 567; // 286 // 567
     }
-  }, {
-    key: "update",
-    value: function update() {
-      this.frames++;
-      // player 1
-      if (this.frames > 59 && (this.currentSprite === this.sprites.stand.right || this.currentSprite === this.sprites.stand.left)) {
-        this.frames = 0;
-      } else if (this.frames > 29 && (this.currentSprite === this.sprites.run.right || this.currentSprite === this.sprites.run.left)) {
-        this.frames = 0;
+    _createClass(Player, [{
+      key: "draw",
+      value: function draw() {
+        // c.fillStyle ='red'
+        // c.fillRect(this.position.x, this.position.y, this.width, this.height)
+
+        // Player 1
+        // c.drawImage(
+        //     this.currentSprite,
+        //     this.currentCropWidth * this.frames,
+        //     0,
+        //     this.currentCropWidth,
+        //     400,
+        //     this.position.x,
+        //     this.position.y,
+        //     this.width,
+        //     this.height)
+
+        // Player 2
+        c.strokeRect(this.position.x, this.position.y, this.width, this.height);
+        c.drawImage(this.currentSprite, this.currentCropWidth * this.frames, 0, this.currentCropWidth, 556,
+        // 475, // 556,
+        this.position.x, this.position.y, this.width, this.height);
       }
+    }, {
+      key: "update",
+      value: function update() {
+        this.frames++;
+        // player 1
+        // if (this.frames > 59 && (this.currentSprite === this.sprites.stand.right ||
+        //     this.currentSprite === this.sprites.stand.left)) {
+        //     this.frames = 0
+        // } else if (this.frames > 29  && (this.currentSprite === this.sprites.run.right ||
+        //     this.currentSprite === this.sprites.run.left)) {
+        //     this.frames = 0
+        // }
 
-      // player 2
-      // if (this.frames > 9  && (this.currentSprite === this.sprites.stand.right ||
-      //     this.currentSprite === this.sprites.stand.left)) {
-      //     this.frames = 0
-      // } else if (this.frames > 7  && (this.currentSprite === this.sprites.run.right ||
-      //     this.currentSprite === this.sprites.run.left)) {
-      //     this.frames = 0
-      // }
+        // player 2
+        if (this.frames > 9 && (this.currentSprite === this.sprites.stand.right || this.currentSprite === this.sprites.stand.left)) {
+          this.frames = 0;
+        } else if (this.frames > 7 && (this.currentSprite === this.sprites.run.right || this.currentSprite === this.sprites.run.left)) {
+          this.frames = 0;
+        }
+        this.draw();
+        this.position.x += this.velocity.x;
+        this.position.y += this.velocity.y;
 
-      this.draw();
-      this.position.x += this.velocity.x;
-      this.position.y += this.velocity.y;
+        // se o personagem sair da tela abaixo do chão
+        if (this.position.y + this.height + this.velocity.y <= canvas.height) {
+          this.velocity.y += gravity;
+        }
+      }
+    }]);
+    return Player;
+  }();
+  var Platform = /*#__PURE__*/function () {
+    function Platform(_ref) {
+      var x = _ref.x,
+        y = _ref.y,
+        image = _ref.image;
+      _classCallCheck(this, Platform);
+      this.position = {
+        x: x,
+        y: y
+      };
+      this.width = image.width;
+      this.height = image.height;
+      this.image = image;
+    }
+    _createClass(Platform, [{
+      key: "draw",
+      value: function draw() {
+        c.drawImage(this.image, this.position.x, this.position.y);
+      }
+    }]);
+    return Platform;
+  }();
+  var GenericObject = /*#__PURE__*/function () {
+    function GenericObject(_ref2) {
+      var x = _ref2.x,
+        y = _ref2.y,
+        image = _ref2.image;
+      _classCallCheck(this, GenericObject);
+      this.position = {
+        x: x,
+        y: y
+      };
+      this.width = image.width;
+      this.height = image.height;
+      this.image = image;
+    }
+    _createClass(GenericObject, [{
+      key: "draw",
+      value: function draw() {
+        c.drawImage(this.image, this.position.x, this.position.y);
+      }
+    }]);
+    return GenericObject;
+  }();
+  function createImage(imageSrc) {
+    var image = new Image();
+    image.src = imageSrc;
+    return image;
+  }
+  var platformImage = createImage(_img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]);
+  var platformSmallTallImage = createImage(_img_platformSmallTall_png__WEBPACK_IMPORTED_MODULE_3__["default"]);
+  var player = new Player();
+  var platforms = []; // usar esse agora
+  var genericObjects = [];
+  var lastKey;
+  var keys = {
+    right: {
+      pressed: false
+    },
+    left: {
+      pressed: false
+    }
+  };
+  var scrollOffset = 0;
+  function init() {
+    platformImage = createImage(_img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]);
+    player = new Player();
+    platforms = [new Platform({
+      x: platformImage.width * 4 + 300 - 2 + platformImage.width - platformSmallTallImage.width,
+      y: 270,
+      image: createImage(_img_platformSmallTall_png__WEBPACK_IMPORTED_MODULE_3__["default"])
+    }), new Platform({
+      x: -1,
+      y: 470,
+      image: platformImage
+    }), new Platform({
+      x: platformImage.width - 3,
+      y: 470,
+      image: platformImage
+    }), new Platform({
+      x: platformImage.width * 2 + 100,
+      y: 470,
+      image: platformImage
+    }), new Platform({
+      x: platformImage.width * 3 + 300,
+      y: 470,
+      image: platformImage
+    }), new Platform({
+      x: platformImage.width * 4 + 300 - 2,
+      y: 470,
+      image: platformImage
+    }), new Platform({
+      x: platformImage.width * 5 + 800 - 2,
+      y: 470,
+      image: platformImage
+    })]; // usar esse agora
 
-      // se o personagem sair da tela abaixo do chão
-      if (this.position.y + this.height + this.velocity.y <= canvas.height) {
-        this.velocity.y += gravity;
+    genericObjects = [new GenericObject({
+      x: -1,
+      y: -1,
+      image: createImage(_img_background_png__WEBPACK_IMPORTED_MODULE_2__["default"])
+    }), new GenericObject({
+      x: -1,
+      y: -1,
+      image: createImage(_img_hills_png__WEBPACK_IMPORTED_MODULE_1__["default"])
+    })];
+    scrollOffset = 0;
+  }
+  function animate() {
+    c.fillStyle = 'white';
+    c.fillRect(0, 0, canvas.width, canvas.height);
+    requestAnimationFrame(animate);
+    genericObjects.forEach(function (genericObject) {
+      genericObject.draw();
+    });
+    platforms.forEach(function (platform) {
+      platform.draw();
+    });
+    player.update();
+
+    // key Pressed
+    if (keys.right.pressed && player.position.x < 400) {
+      player.velocity.x = player.speed;
+    } else if (keys.left.pressed && player.position.x > 100 || keys.left.pressed && scrollOffset === 0 && player.position.x > 0) {
+      player.velocity.x = -player.speed;
+    } else {
+      player.velocity.x = 0;
+      if (keys.right.pressed) {
+        scrollOffset += player.speed;
+        platforms.forEach(function (platform) {
+          platform.position.x -= player.speed;
+        });
+        genericObjects.forEach(function (genericObject) {
+          genericObject.position.x -= player.speed * 0.66;
+        });
+      } else if (keys.left.pressed && scrollOffset > 0) {
+        scrollOffset -= player.speed;
+        platforms.forEach(function (platform) {
+          platform.position.x += player.speed;
+        });
+        genericObjects.forEach(function (genericObject) {
+          genericObject.position.x += player.speed * 0.66;
+        });
       }
     }
-  }]);
-  return Player;
-}();
-var Platform = /*#__PURE__*/function () {
-  function Platform(_ref) {
-    var x = _ref.x,
-      y = _ref.y,
-      image = _ref.image;
-    _classCallCheck(this, Platform);
-    this.position = {
-      x: x,
-      y: y
-    };
-    this.width = image.width;
-    this.height = image.height;
-    this.image = image;
-  }
-  _createClass(Platform, [{
-    key: "draw",
-    value: function draw() {
-      c.drawImage(this.image, this.position.x, this.position.y);
-    }
-  }]);
-  return Platform;
-}();
-var GenericObject = /*#__PURE__*/function () {
-  function GenericObject(_ref2) {
-    var x = _ref2.x,
-      y = _ref2.y,
-      image = _ref2.image;
-    _classCallCheck(this, GenericObject);
-    this.position = {
-      x: x,
-      y: y
-    };
-    this.width = image.width;
-    this.height = image.height;
-    this.image = image;
-  }
-  _createClass(GenericObject, [{
-    key: "draw",
-    value: function draw() {
-      c.drawImage(this.image, this.position.x, this.position.y);
-    }
-  }]);
-  return GenericObject;
-}();
-function createImage(imageSrc) {
-  var image = new Image();
-  image.src = imageSrc;
-  return image;
-}
-var platformImage = createImage(_img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]);
-var platformSmallTallImage = createImage(_img_platformSmallTall_png__WEBPACK_IMPORTED_MODULE_3__["default"]);
-var player = new Player();
-var platforms = []; // usar esse agora
-var genericObjects = [];
-var lastKey;
-var keys = {
-  right: {
-    pressed: false
-  },
-  left: {
-    pressed: false
-  }
-};
-var scrollOffset = 0;
-function init() {
-  platformImage = createImage(_img_platform_png__WEBPACK_IMPORTED_MODULE_0__["default"]);
-  player = new Player();
-  platforms = [new Platform({
-    x: platformImage.width * 4 + 300 - 2 + platformImage.width - platformSmallTallImage.width,
-    y: 270,
-    image: createImage(_img_platformSmallTall_png__WEBPACK_IMPORTED_MODULE_3__["default"])
-  }), new Platform({
-    x: -1,
-    y: 470,
-    image: platformImage
-  }), new Platform({
-    x: platformImage.width - 3,
-    y: 470,
-    image: platformImage
-  }), new Platform({
-    x: platformImage.width * 2 + 100,
-    y: 470,
-    image: platformImage
-  }), new Platform({
-    x: platformImage.width * 3 + 300,
-    y: 470,
-    image: platformImage
-  }), new Platform({
-    x: platformImage.width * 4 + 300 - 2,
-    y: 470,
-    image: platformImage
-  }), new Platform({
-    x: platformImage.width * 5 + 800 - 2,
-    y: 470,
-    image: platformImage
-  })]; // usar esse agora
 
-  genericObjects = [new GenericObject({
-    x: -1,
-    y: -1,
-    image: createImage(_img_background_png__WEBPACK_IMPORTED_MODULE_2__["default"])
-  }), new GenericObject({
-    x: -1,
-    y: -1,
-    image: createImage(_img_hills_png__WEBPACK_IMPORTED_MODULE_1__["default"])
-  })];
-  scrollOffset = 0;
-}
-function animate() {
-  c.fillStyle = 'white';
-  c.fillRect(0, 0, canvas.width, canvas.height);
-  requestAnimationFrame(animate);
-  genericObjects.forEach(function (genericObject) {
-    genericObject.draw();
-  });
-  platforms.forEach(function (platform) {
-    platform.draw();
-  });
-  player.update();
+    // platform collision detection
+    platforms.forEach(function (platform) {
+      if (player.position.y + player.height <= platform.position.y && player.position.y + player.height + player.velocity.y >= platform.position.y && player.position.x + player.width >= platform.position.x && player.position.x <= platform.position.x + platform.width) {
+        player.velocity.y = 0;
+      }
+    });
 
-  // key Pressed
-  if (keys.right.pressed && player.position.x < 400) {
-    player.velocity.x = player.speed;
-  } else if (keys.left.pressed && player.position.x > 100 || keys.left.pressed && scrollOffset === 0 && player.position.x > 0) {
-    player.velocity.x = -player.speed;
-  } else {
-    player.velocity.x = 0;
-    if (keys.right.pressed) {
-      scrollOffset += player.speed;
-      platforms.forEach(function (platform) {
-        platform.position.x -= player.speed;
-      });
-      genericObjects.forEach(function (genericObject) {
-        genericObject.position.x -= player.speed * 0.66;
-      });
-    } else if (keys.left.pressed && scrollOffset > 0) {
-      scrollOffset -= player.speed;
-      platforms.forEach(function (platform) {
-        platform.position.x += player.speed;
-      });
-      genericObjects.forEach(function (genericObject) {
-        genericObject.position.x += player.speed * 0.66;
-      });
+    // se a tecla está precionada
+    // sprite switching
+    if (keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.run.right) {
+      player.frames = 1;
+      player.currentSprite = player.sprites.run.right;
+      player.currentCropWidth = player.sprites.run.cropWidth;
+      player.width = player.sprites.run.width;
+    } else if (keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.run.left) {
+      player.currentSprite = player.sprites.run.left;
+      player.currentCropWidth = player.sprites.run.cropWidth;
+      player.width = player.sprites.run.width;
+    } else if (!keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.stand.left) {
+      player.currentSprite = player.sprites.stand.left;
+      player.currentCropWidth = player.sprites.stand.cropWidth;
+      player.width = player.sprites.stand.width;
+    } else if (!keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.stand.right) {
+      player.currentSprite = player.sprites.stand.right;
+      player.currentCropWidth = player.sprites.stand.cropWidth;
+      player.width = player.sprites.stand.width;
+    }
+
+    // console.log(scrollOffset) testar se a rolagem passou de um determinado valor
+    // win condition
+    if (scrollOffset > platformImage.width * 5 + 300 - 2) {
+      console.log('You Win! Parabêns!');
+    }
+
+    // lose condition
+    if (player.position.y > canvas.height) {
+      init();
+      console.log('you lose');
     }
   }
-
-  // platform collision detection
-  platforms.forEach(function (platform) {
-    if (player.position.y + player.height <= platform.position.y && player.position.y + player.height + player.velocity.y >= platform.position.y && player.position.x + player.width >= platform.position.x && player.position.x <= platform.position.x + platform.width) {
-      player.velocity.y = 0;
+  init();
+  animate();
+  addEventListener('keydown', function (_ref3) {
+    var key = _ref3.key;
+    // console.log(event.key)
+    switch (key) {
+      case 'a':
+        console.log('left');
+        keys.left.pressed = true;
+        lastKey = 'left';
+        // player.currentSprite = player.sprites.run.left
+        // player.currentCropWidth = player.sprites.run.cropWidth
+        // player.width = player.sprites.run.width
+        break;
+      case 's':
+        console.log('down');
+        break;
+      case 'd':
+        console.log('right');
+        keys.right.pressed = true;
+        lastKey = 'right';
+        // player.currentSprite = player.sprites.run.right
+        // player.currentCropWidth = player.sprites.run.cropWidth
+        // player.width = player.sprites.run.width
+        break;
+      case 'w':
+        console.log('up');
+        // empurrar para cima sinal de -
+        player.velocity.y -= 25;
+        break;
     }
+    // console.log(keys.right.pressed)
   });
 
-  // se a tecla está precionada
-  // sprite switching
-  if (keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.run.right) {
-    player.frames = 1;
-    player.currentSprite = player.sprites.run.right;
-    player.currentCropWidth = player.sprites.run.cropWidth;
-    player.width = player.sprites.run.width;
-  } else if (keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.run.left) {
-    player.currentSprite = player.sprites.run.left;
-    player.currentCropWidth = player.sprites.run.cropWidth;
-    player.width = player.sprites.run.width;
-  } else if (!keys.left.pressed && lastKey === 'left' && player.currentSprite !== player.sprites.stand.left) {
-    player.currentSprite = player.sprites.stand.left;
-    player.currentCropWidth = player.sprites.stand.cropWidth;
-    player.width = player.sprites.stand.width;
-  } else if (!keys.right.pressed && lastKey === 'right' && player.currentSprite !== player.sprites.stand.right) {
-    player.currentSprite = player.sprites.stand.right;
-    player.currentCropWidth = player.sprites.stand.cropWidth;
-    player.width = player.sprites.stand.width;
-  }
-
-  // console.log(scrollOffset) testar se a rolagem passou de um determinado valor
-  // win condition
-  if (scrollOffset > platformImage.width * 5 + 300 - 2) {
-    console.log('You Win! Parabêns!');
-  }
-
-  // lose condition
-  if (player.position.y > canvas.height) {
-    init();
-    console.log('you lose');
-  }
-}
-init();
-animate();
-addEventListener('keydown', function (_ref3) {
-  var key = _ref3.key;
-  // console.log(event.key)
-  switch (key) {
-    case 'a':
-      console.log('left');
-      keys.left.pressed = true;
-      lastKey = 'left';
-      // player.currentSprite = player.sprites.run.left
-      // player.currentCropWidth = player.sprites.run.cropWidth
-      // player.width = player.sprites.run.width
-      break;
-    case 's':
-      console.log('down');
-      break;
-    case 'd':
-      console.log('right');
-      keys.right.pressed = true;
-      lastKey = 'right';
-      // player.currentSprite = player.sprites.run.right
-      // player.currentCropWidth = player.sprites.run.cropWidth
-      // player.width = player.sprites.run.width
-      break;
-    case 'w':
-      console.log('up');
-      // empurrar para cima sinal de -
-      player.velocity.y -= 25;
-      break;
-  }
-  // console.log(keys.right.pressed)
-});
-
-// adicionado para o jogador parar de se mover quando pressionar uma tecla
-addEventListener('keyup', function (_ref4) {
-  var key = _ref4.key;
-  // console.log(event.key)
-  switch (key) {
-    case 'a':
-      console.log('left');
-      keys.left.pressed = false;
-      break;
-    case 's':
-      console.log('down');
-      break;
-    case 'd':
-      console.log('right');
-      keys.right.pressed = false;
-      // player.currentSprite = player.sprites.stand.right
-      // player.currentCropWidth = player.sprites.stand.cropWidth
-      // player.width = player.sprites.stand.width
-      // player.velocity.x = 0
-      break;
-    case 'w':
-      console.log('up');
-      // empurrar para cima sinal de -
-      // player.velocity.y -= 10
-      break;
-  }
-  // console.log(keys.right.pressed)
+  // adicionado para o jogador parar de se mover quando pressionar uma tecla
+  addEventListener('keyup', function (_ref4) {
+    var key = _ref4.key;
+    // console.log(event.key)
+    switch (key) {
+      case 'a':
+        console.log('left');
+        keys.left.pressed = false;
+        break;
+      case 's':
+        console.log('down');
+        break;
+      case 'd':
+        console.log('right');
+        keys.right.pressed = false;
+        // player.currentSprite = player.sprites.stand.right
+        // player.currentCropWidth = player.sprites.stand.cropWidth
+        // player.width = player.sprites.stand.width
+        // player.velocity.x = 0
+        break;
+      case 'w':
+        console.log('up');
+        // empurrar para cima sinal de -
+        // player.velocity.y -= 10
+        break;
+    }
+    // console.log(keys.right.pressed)
+  });
 });
 })();
 
